@@ -32,7 +32,7 @@ class AuthProvider extends ChangeNotifier {
 
   Future<void> loginData(
       {required String username, required String password}) async {
-    String myUrl = "$serverUrl/signin";
+    String myUrl = "$serverUrl/signin/";
 
     DioHelper.postData(url: myUrl,
             // token:DioHelper.dio!.options.headers["Authorization"] ,
@@ -48,7 +48,7 @@ class AuthProvider extends ChangeNotifier {
       {required String username,
       required String email,
       required String password}) async {
-    String myUrl = "$serverUrl/register";
+    String myUrl = "$serverUrl/register/";
     DioHelper.postData(url: myUrl, data: {
       "username": "$username",
       "email": "$email",
