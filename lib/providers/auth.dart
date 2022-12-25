@@ -5,7 +5,7 @@ import 'package:fuel_ur_way_frontend/providers/dio_helper.dart';
 import 'package:fuel_ur_way_frontend/models/user.dart';
 
 class AuthProvider extends ChangeNotifier {
-  String serverUrl = "http://127.0.0.1:8000";
+  String serverUrl = "http://10.0.2.2:8000/";
   var status;
   String? username;
   var token;
