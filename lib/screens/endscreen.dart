@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fuel_ur_way_frontend/screens/lastpage.dart';
-import 'package:fuel_ur_way_frontend/style/color.dart';
+import 'package:fuel_ur_way_frontend/style/colors.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:toast/toast.dart';
 
@@ -29,7 +29,6 @@ class _EndScreenState extends State<EndScreen> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     razorpay!.clear();
   }

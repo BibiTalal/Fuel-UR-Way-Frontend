@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-
 import 'package:fuel_ur_way_frontend/providers/order_provider.dart';
-
 import 'package:provider/provider.dart';
-
 import 'package:razorpay_flutter/razorpay_flutter.dart';
-
 import 'package:toast/toast.dart';
+import 'package:fuel_ur_way_frontend/style/colors.dart';
 
 class PaymentScreen extends StatefulWidget {
   String? fueltype;
