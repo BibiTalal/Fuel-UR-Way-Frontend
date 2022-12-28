@@ -53,7 +53,7 @@ class OrderProvider extends ChangeNotifier {
     Ordermodel? result;
     try {
       final response = await http.get(
-        Uri.parse("http://127.0.0.1:8000/list/order"),
+        Uri.parse("http://10.0.2.2:8000/list/order/"),
         headers: {
           HttpHeaders.contentTypeHeader: "application/json",
         },

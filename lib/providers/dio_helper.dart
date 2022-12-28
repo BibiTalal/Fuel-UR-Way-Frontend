@@ -8,7 +8,7 @@ class DioHelper {
   static init() {
     dio = Dio(
       BaseOptions(
-        baseUrl: "http://127.0.0.1:8000",
+        baseUrl: "http://10.0.2.2:8000",
         receiveDataWhenStatusError: true,
       ),
     );
@@ -70,7 +70,7 @@ class DioHelper {
   }
 
   static Future<List<Ordermodel>> getOrder() async {
-    var url = Uri.parse("http://127.0.0.1:8000");
+    var url = Uri.parse("http://10.0.2.2:8000");
 
     final response = await http.get(
       url,

@@ -141,7 +141,7 @@ class _RequestScreenState extends State<RequestScreen> {
                                   style: TextStyle(fontSize: 13),
                                   textInputAction: TextInputAction.next,
                                   decoration: const InputDecoration(
-                                    hintText: '   Fuel Quantity in Litters',
+                                    hintText: '   Fuel Quantity',
                                     enabledBorder: UnderlineInputBorder(
                                         borderSide: BorderSide(
                                       color: Colors.black,

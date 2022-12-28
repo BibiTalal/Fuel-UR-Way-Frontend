@@ -28,7 +28,8 @@ class AuthProvider extends ChangeNotifier {
       {required String username, required String password}) async {
     late String access;
     try {
-      Response response = await DioHelper.dio!.post('/signin/', data: {
+      Response response =
+          await DioHelper.dio!.post('http://10.0.2.2:8000/signin/', data: {
         "username": username,
         "password": password,
       });
@@ -52,7 +53,8 @@ class AuthProvider extends ChangeNotifier {
       required String email,
       required String password}) async {
     try {
-      var response = await DioHelper.dio!.post("/register/", data: {
+      var response =
+          await DioHelper.dio!.post("http://10.0.2.2:8000/register/", data: {
         'username': username,
         'password': password,
       });

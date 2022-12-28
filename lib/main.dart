@@ -92,7 +92,7 @@ class MyApp extends StatelessWidget {
         ],
         child: MaterialApp.router(
           debugShowCheckedModeBanner: false,
-          title: 'fuel Up Way',
+          title: 'Fuel UR Way',
           routerConfig: router,
           theme: ThemeData(
             primarySwatch: Colors.blue,

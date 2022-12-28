@@ -56,11 +56,11 @@ class _MapScreenState extends State<MapScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Enter your City',
+                          'Address',
                           style: TextStyle(
                               color: drawerBackgroundColor, fontSize: 22),
                         ),
-                        Text('Governate'),
+                        Text('Enter your Address'),
                         governateList(context),
                         Row(
                           children: [
@@ -75,7 +75,7 @@ class _MapScreenState extends State<MapScreen> {
                                   style: TextStyle(fontSize: 13),
                                   textInputAction: TextInputAction.next,
                                   decoration: const InputDecoration(
-                                    hintText: '   Block',
+                                    hintText: '   City & Block',
                                     enabledBorder: UnderlineInputBorder(
                                         borderSide: BorderSide(
                                       color: Colors.black,

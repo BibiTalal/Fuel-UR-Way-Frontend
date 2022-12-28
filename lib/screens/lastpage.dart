@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-
+import 'package:go_router/go_router.dart';
 import 'package:fuel_ur_way_frontend/style/colors.dart';
-
 import 'package:fuel_ur_way_frontend/screens/mainscreen.dart';
 
 class LastScreen extends StatelessWidget {
