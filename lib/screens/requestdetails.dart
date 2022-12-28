@@ -124,13 +124,12 @@ class _RequestDetailsState extends State<RequestDetails> {
                       child: Row(
                         children: [
                           Text('litter :'),
-                          Text(
-                            requestModel.order!.litter ?? '',
-                            style: TextStyle(
-                                color: Colors.red,
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold),
-                          ),
+                          // Text(requestModel.order!.litter ??'',
+                          //   style:TextStyle(
+                          //       color: Colors.red,
+                          //       fontSize: 15,
+                          //       fontWeight: FontWeight.bold
+                          //   ) ,),
                         ],
                       ),
                     ),

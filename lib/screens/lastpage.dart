@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'package:fuel_ur_way_frontend/style/colors.dart';
 
-import 'package:fuel_ur_way_frontend/screens/home.dart';
+import 'package:fuel_ur_way_frontend/screens/mainscreen.dart';
 
 class LastScreen extends StatelessWidget {
-  const LastScreen({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,8 +42,7 @@ class LastScreen extends StatelessWidget {
             height: 50,
             child: ElevatedButton(
               onPressed: () async {
-                Navigator.push(context,
-                    new MaterialPageRoute(builder: (context) => MainScreen()));
+                Navigator.of(context).pushNamed('/mainscreen');
               },
               child: Text(
                 "Done",

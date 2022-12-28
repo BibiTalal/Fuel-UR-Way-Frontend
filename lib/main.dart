@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:fuel_ur_way_frontend/screens/welcome.dart';
 import 'package:fuel_ur_way_frontend/screens/siginup.dart';
 import 'package:fuel_ur_way_frontend/screens/signin.dart';
-import 'package:fuel_ur_way_frontend/screens/home.dart';
+import 'package:fuel_ur_way_frontend/screens/mainscreen.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:fuel_ur_way_frontend/providers/auth.dart';
@@ -11,6 +10,9 @@ import 'package:fuel_ur_way_frontend/providers/nav_provider.dart';
 import 'package:fuel_ur_way_frontend/screens/request.dart';
 import 'package:fuel_ur_way_frontend/screens/requestdetails.dart';
 import 'package:fuel_ur_way_frontend/providers/order_provider.dart';
+import 'package:fuel_ur_way_frontend/screens/lastpage.dart';
+import 'package:fuel_ur_way_frontend/screens/payment.dart';
+import 'package:fuel_ur_way_frontend/screens/welcome.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -54,8 +56,16 @@ final router = GoRouter(
       builder: (context, state) => MapScreen(),
     ),
     GoRoute(
+      path: '/payment',
+      builder: (context, state) => PaymentScreen(),
+    ),
+    GoRoute(
       path: '/requestdetails',
       builder: (context, state) => RequestDetails(),
+    ),
+    GoRoute(
+      path: '/lastscreen',
+      builder: (context, state) => LastScreen(),
     ),
   ],
 );
@@ -82,11 +92,11 @@ class MyApp extends StatelessWidget {
         ],
         child: MaterialApp.router(
           debugShowCheckedModeBanner: false,
-          title: 'Fuel UR Way',
+          title: 'fuel Up Way',
           routerConfig: router,
           theme: ThemeData(
-              // primarySwatch: Color(0xff939823),
-              ),
+            primarySwatch: Colors.blue,
+          ),
         ));
   }
 }

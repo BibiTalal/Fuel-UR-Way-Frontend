@@ -4,6 +4,7 @@ import 'package:fuel_ur_way_frontend/providers/auth.dart';
 import 'package:go_router/go_router.dart';
 import 'package:fuel_ur_way_frontend/screens/siginup.dart';
 import 'package:provider/provider.dart';
+import 'package:fuel_ur_way_frontend/screens/mainscreen.dart';
 
 class SigninScreen extends StatefulWidget {
   @override
@@ -11,9 +12,20 @@ class SigninScreen extends StatefulWidget {
 }
 
 class _SigninScreenState extends State<SigninScreen> {
+  String? username;
+  String? password;
+
+  bool loading = false;
   var formKey = GlobalKey<FormState>();
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    usernameController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,10 +83,12 @@ class _SigninScreenState extends State<SigninScreen> {
                         width: 240,
                         child: TextFormField(
                           controller: usernameController,
-                          onChanged: (value) {
-                            // user.username = value;
-                          },
                           autofocus: false,
+                          onChanged: (input) {
+                            setState(() {
+                              username = input;
+                            });
+                          },
                           validator: (value) {
                             if (value!.isEmpty) {
                               return 'Should not be Empty ';
@@ -112,8 +126,10 @@ class _SigninScreenState extends State<SigninScreen> {
                         width: 240,
                         child: TextFormField(
                           controller: passwordController,
-                          onChanged: (value) {
-                            //user.password = value;
+                          onChanged: (input) {
+                            setState(() {
+                              password = input;
+                            });
                           },
                           autofocus: false,
                           obscureText: true,
@@ -160,7 +176,12 @@ class _SigninScreenState extends State<SigninScreen> {
                               password: passwordController.text)
                           .then((value) {
                         context.pop();
-                        context.push('/mainscreen');
+                        Navigator.push(
+                            context,
+                            new MaterialPageRoute(
+                                builder: (context) => MainScreen(
+                                      username: usernameController.text,
+                                    )));
                       }).catchError((e) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(

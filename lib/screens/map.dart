@@ -1,30 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:fuel_ur_way_frontend/style/colors.dart';
+import 'package:fuel_ur_way_frontend/screens/lastpage.dart';
+import 'package:fuel_ur_way_frontend/screens/payment.dart';
 
 class MapScreen extends StatefulWidget {
   String? fueltype;
   String? carname;
   String? Fuel_Quantity;
-  String? address;
-  String? Block;
-  String? Street;
-  String? Buildingn;
-  bool? PaymentType = false;
 
-  MapScreen(
-      {this.fueltype,
-      this.carname,
-      this.Fuel_Quantity,
-      this.address,
-      this.Block,
-      this.Street,
-      this.Buildingn,
-      this.PaymentType});
+  double? total;
+  String? time;
+  DateTime? date;
+  String? extraService;
+  MapScreen({
+    this.fueltype,
+    this.carname,
+    this.Fuel_Quantity,
+    this.total,
+    this.time,
+    this.date,
+    this.extraService,
+  });
   @override
   State<MapScreen> createState() => _MapScreenState();
 }
 
 class _MapScreenState extends State<MapScreen> {
+  var bloccontroller = TextEditingController();
+  var strrtcontroller = TextEditingController();
+  var buildingnumbercontroller = TextEditingController();
+  String? Block;
+  String? Street;
+  String? Buildingn;
+  bool? PaymentType = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,14 +43,6 @@ class _MapScreenState extends State<MapScreen> {
         child: SafeArea(
           child: Stack(
             children: [
-              // GoogleMap(initialCameraPosition:initialPosition ,
-              //   mapType: MapType.normal,
-              //   onMapCreated:(GoogleMapController controller){
-              //     _controller.complete(controller);
-              //
-              //   } ,
-              // ),
-
               Positioned(
                 bottom: 0.0,
                 child: Container(
@@ -56,20 +56,20 @@ class _MapScreenState extends State<MapScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Add additional information',
+                          'Enter your City',
                           style: TextStyle(
                               color: drawerBackgroundColor, fontSize: 22),
                         ),
-                        Text('Address'),
-                        Addresslist(context),
+                        Text('Governate'),
+                        governateList(context),
                         Row(
                           children: [
                             Container(
                                 width: 120,
                                 child: TextFormField(
-                                  controller: null,
+                                  controller: bloccontroller,
                                   onChanged: (value) {
-                                    widget.Block = value;
+                                    Block = value;
                                   },
                                   keyboardType: TextInputType.number,
                                   style: TextStyle(fontSize: 13),
@@ -95,9 +95,9 @@ class _MapScreenState extends State<MapScreen> {
                             Container(
                                 width: 120,
                                 child: TextFormField(
-                                  controller: null,
+                                  controller: strrtcontroller,
                                   onChanged: (value) {
-                                    widget.Street = value;
+                                    Street = value;
                                   },
                                   keyboardType: TextInputType.name,
                                   style: TextStyle(fontSize: 13),
@@ -122,9 +122,9 @@ class _MapScreenState extends State<MapScreen> {
                         Container(
                             width: MediaQuery.of(context).size.width,
                             child: TextFormField(
-                              controller: null,
+                              controller: buildingnumbercontroller,
                               onChanged: (value) {
-                                widget.Buildingn = value;
+                                Buildingn = value;
                               },
                               keyboardType: TextInputType.number,
                               style: TextStyle(fontSize: 13),
@@ -147,7 +147,89 @@ class _MapScreenState extends State<MapScreen> {
                                 ),
                               ),
                             )),
-                        //
+                        Row(
+                          children: [
+                            Radio<Payment>(
+                                value: Payment.Cash,
+                                groupValue: _Payment,
+                                activeColor: Color.fromARGB(255, 0, 0, 0),
+                                onChanged: (value) {
+                                  setState(() {
+                                    _Payment = value!;
+                                    PaymentType = false;
+                                  });
+                                }),
+                            Text('Cash'),
+                            SizedBox(
+                              width: 40,
+                            ),
+                            Radio<Payment>(
+                                value: Payment.Visa,
+                                groupValue: _Payment,
+                                activeColor: Color.fromARGB(255, 0, 0, 0),
+                                onChanged: (value) {
+                                  setState(() {
+                                    PaymentType = true;
+                                    _Payment = value!;
+                                  });
+                                }),
+                            Container(
+                              child: Image(
+                                image: AssetImage('assets/images/card.png'),
+                                fit: BoxFit.cover,
+                                width: 40,
+                                height: 40,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Center(
+                          child: Container(
+                            width: 300,
+                            height: 50,
+                            child: ElevatedButton(
+                              onPressed: () async {
+                                var address = bloccontroller.text +
+                                    strrtcontroller.text +
+                                    buildingnumbercontroller.text;
+                                if (PaymentType!) {
+                                  Navigator.push(
+                                      context,
+                                      new MaterialPageRoute(
+                                          builder: (context) => PaymentScreen(
+                                              fueltype: widget.fueltype,
+                                              carname: widget.carname,
+                                              Fuel_Quantity:
+                                                  widget.Fuel_Quantity,
+                                              Payment: _Payment,
+                                              Address: address,
+                                              total: widget.total,
+                                              //time:widget.time,
+                                              date: widget.date)));
+                                } else {
+                                  Navigator.push(
+                                      context,
+                                      new MaterialPageRoute(
+                                          builder: (context) => LastScreen()));
+                                }
+                              },
+                              child: Text(
+                                'Authrise payment',
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.w800),
+                              ),
+                              style: ButtonStyle(
+                                shape: MaterialStateProperty.all(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                ),
+                                backgroundColor:
+                                    MaterialStateProperty.all(buttonColor),
+                              ),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -160,15 +242,17 @@ class _MapScreenState extends State<MapScreen> {
     );
   }
 
-  String dropdownvalue = 'Address';
+  String dropdownvalue = 'Governate';
   var items = [
-    'Hawally',
+    'Governate',
     'Al Jahra',
-    'Al Ahmaddi',
-    'Asima',
     'Farwaniya',
+    'Al Ahmadi',
+    'Al Asmaa',
+    'Hawally',
+    'Mubarak Al Kabeer'
   ];
-  Widget Addresslist(BuildContext context) => DropdownButton(
+  Widget governateList(BuildContext context) => DropdownButton(
         // Initial Value
         value: dropdownvalue,
 

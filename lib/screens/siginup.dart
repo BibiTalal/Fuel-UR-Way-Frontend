@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fuel_ur_way_frontend/style/colors.dart';
-import 'package:fuel_ur_way_frontend/screens/home.dart';
+import 'package:fuel_ur_way_frontend/screens/mainscreen.dart';
 import 'package:provider/provider.dart';
 import 'package:fuel_ur_way_frontend/providers/auth.dart';
 import 'package:fuel_ur_way_frontend/screens/signin.dart';
@@ -16,6 +16,7 @@ class _SignupScreenState extends State<SignupScreen> {
   var passwordController = TextEditingController();
   var confirmPasswordController = TextEditingController();
   var phoneController = TextEditingController();
+  String? username;
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +89,11 @@ class _SignupScreenState extends State<SignupScreen> {
                                 autofocus: false,
                                 controller: usernameController,
                                 onChanged: (value) {
-                                  //  user.username = value;
+                                  usernameController.text = value;
+                                },
+                                onFieldSubmitted: (value) {
+                                  usernameController.text = value;
+                                  username = usernameController.text;
                                 },
                                 validator: (value) {
                                   if (value!.isEmpty) {
@@ -265,7 +270,9 @@ class _SignupScreenState extends State<SignupScreen> {
                         Navigator.push(
                             context,
                             new MaterialPageRoute(
-                                builder: (context) => MainScreen()));
+                                builder: (context) => MainScreen(
+                                      username: usernameController.text,
+                                    )));
                       }).catchError((e) {
                         print(e.toString());
                         ScaffoldMessenger.of(context).showSnackBar(

@@ -2,17 +2,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:fuel_ur_way_frontend/providers/dio_helper.dart';
-import 'package:fuel_ur_way_frontend/models/user.dart';
+import 'dart:io';
+import 'package:dio/dio.dart';
 
 class AuthProvider extends ChangeNotifier {
-  String serverUrl = "http://10.0.2.2:8000/";
-  var status;
   String? username;
-  var token;
-  String? Block;
-  String? address;
-  String? Street;
-  String? carname;
 
   Future<bool> hasToken() async {
     var pref = await SharedPreferences.getInstance();
@@ -30,32 +24,57 @@ class AuthProvider extends ChangeNotifier {
     return true;
   }
 
-  Future<void> loginData(
+  Future<bool> loginData(
       {required String username, required String password}) async {
-    String myUrl = "$serverUrl/signin/";
+    late String access;
+    try {
+      Response response = await DioHelper.dio!.post('/signin/', data: {
+        "username": username,
+        "password": password,
+      });
+      access = response.data["access"];
+      DioHelper.dio!.options.headers["Authorization"] = "Bearer $access";
+      var ref = await SharedPreferences.getInstance();
+      ref.setString("token", access);
+      this.username = username;
+      notifyListeners();
+      return true;
+    } on DioError catch (error) {
+      print(error);
+    }
+    notifyListeners();
 
-    DioHelper.postData(url: myUrl,
-            // token:DioHelper.dio!.options.headers["Authorization"] ,
-            data: {"username": "$username", "password": "$password"})
-        .then((value) => {user = User.fromJson(value.data)})
-        .catchError((e) {
-      print(e.toString());
-    });
+    return false;
   }
 
-  User? user;
-  Future<void> UserRegister(
+  Future<bool> UserRegister(
       {required String username,
       required String email,
       required String password}) async {
-    String myUrl = "$serverUrl/register/";
-    DioHelper.postData(url: myUrl, data: {
-      "username": "$username",
-      "email": "$email",
-      "password": "$password"
-    }).then((value) => {user = User.fromJson(value.data)}).catchError((e) {
-      print(e.toString());
-    });
+    try {
+      var response = await DioHelper.dio!.post("/register/", data: {
+        'username': username,
+        'password': password,
+      });
+
+      var token = response.data["access"];
+
+      DioHelper.dio!.options.headers[HttpHeaders.authorizationHeader] =
+          "Bearer $token";
+      this.username = username;
+      notifyListeners();
+
+      var pref = await SharedPreferences.getInstance();
+      await pref.setString("token", token);
+      print('register successfully');
+      return true;
+    } on DioError catch (e) {
+      print(e.response!.data);
+    } catch (e) {
+      print("Unknown Error");
+    }
+
+    return false;
   }
 
   void logout() async {

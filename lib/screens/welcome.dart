@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:fuel_ur_way_frontend/style/colors.dart';
 import 'package:fuel_ur_way_frontend/screens/siginup.dart';
 import 'package:fuel_ur_way_frontend/screens/signin.dart';
+import 'package:fuel_ur_way_frontend/style/colors.dart';
 
 class WelcomeScreen extends StatelessWidget {
+  static const String path = '/';
   const WelcomeScreen({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

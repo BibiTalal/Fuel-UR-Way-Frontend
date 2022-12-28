@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:fuel_ur_way_frontend/models/drawer.dart';
-import 'package:fuel_ur_way_frontend/screens/fueltype.dart';
-import 'package:fuel_ur_way_frontend/screens/requestdetails.dart';
-import 'package:fuel_ur_way_frontend/providers/auth.dart';
 import 'package:provider/provider.dart';
-import 'package:fuel_ur_way_frontend/style/colors.dart';
+import 'package:fuel_ur_way_frontend/providers/auth.dart';
 import 'package:fuel_ur_way_frontend/providers/nav_provider.dart';
-import 'package:fuel_ur_way_frontend/drawer/nav_model.dart';
 import 'package:fuel_ur_way_frontend/screens/signin.dart';
+import 'package:fuel_ur_way_frontend/style/colors.dart';
 
-class NavigationDrawerWidget extends StatelessWidget {
+class MenuWidget extends StatelessWidget {
+  String username;
+  final Function(String)? onItemClick;
+  MenuWidget({required this.username, this.onItemClick});
   final padding = EdgeInsets.symmetric(horizontal: 20);
 
   @override
@@ -37,87 +36,19 @@ class NavigationDrawerWidget extends StatelessWidget {
                 child: buildHeader(isCollapsed, context),
               ),
               const SizedBox(height: 24),
-              buildList(items: itemsFirst, isCollapsed: isCollapsed),
               const SizedBox(height: 24),
               Divider(color: Colors.white70),
+              sliderItem('Home', Icons.home),
+              sliderItem('Upcoming Services', Icons.notifications),
+              sliderItem('Saved Vehicles', Icons.turned_in),
+              sliderItem('Loyalty Points', Icons.star),
               const SizedBox(height: 24),
-              Spacer(),
               buildCollapseIcon(context, isCollapsed),
               const SizedBox(height: 12),
             ],
           ),
         ),
       ),
-    );
-  }
-
-  Widget buildList({
-    required bool isCollapsed,
-    required List<DrawerItem> items,
-    int indexOffset = 0,
-  }) =>
-      ListView.separated(
-        padding: isCollapsed ? EdgeInsets.zero : padding,
-        shrinkWrap: true,
-        primary: false,
-        itemCount: items.length,
-        separatorBuilder: (context, index) => SizedBox(height: 16),
-        itemBuilder: (context, index) {
-          final item = items[index];
-
-          return buildMenuItem(
-            isCollapsed: isCollapsed,
-            text: item.title,
-            icon: item.icon,
-            onClicked: () => selectItem(context, indexOffset + index),
-          );
-        },
-      );
-
-  void selectItem(BuildContext context, int index) {
-    final navigateTo = (page) => Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => page,
-        ));
-
-    Navigator.of(context).pop();
-
-    switch (index) {
-      case 0:
-        navigateTo(FuelTypeScreen());
-        break;
-      case 1:
-        // navigateTo(());
-        break;
-      case 2:
-        navigateTo(RequestDetails());
-        break;
-      case 3:
-        // navigateTo();
-        break;
-    }
-  }
-
-  Widget buildMenuItem({
-    required bool isCollapsed,
-    required String text,
-    required IconData icon,
-    VoidCallback? onClicked,
-  }) {
-    final color = Colors.white;
-    final leading = Icon(icon, color: Colors.black45);
-
-    return Material(
-      color: Colors.transparent,
-      child: isCollapsed
-          ? ListTile(
-              title: leading,
-              onTap: onClicked,
-            )
-          : ListTile(
-              leading: leading,
-              title: Text(text, style: TextStyle(color: color, fontSize: 16)),
-              onTap: onClicked,
-            ),
     );
   }
 
@@ -150,6 +81,41 @@ class NavigationDrawerWidget extends StatelessWidget {
     );
   }
 
+  Widget sliderItem(String title, IconData icons) => InkWell(
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(color: Colors.grey),
+          ),
+        ),
+        child: SizedBox(
+          height: 40,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20),
+            child: Row(
+              children: [
+                Icon(
+                  icons,
+                  color: Colors.black45,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Text(
+                  title,
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
+      onTap: () {
+        onItemClick!(title);
+        print(title);
+      });
+
   Widget buildHeader(bool isCollapsed, BuildContext context) => isCollapsed
       ? CircleAvatar(radius: 10)
       : Row(
@@ -167,7 +133,7 @@ class NavigationDrawerWidget extends StatelessWidget {
               width: 20,
             ),
             Text(
-              "${context.read<AuthProvider>().username}",
+              username,
               style: TextStyle(color: Colors.white, fontSize: 14),
             ),
             SizedBox(

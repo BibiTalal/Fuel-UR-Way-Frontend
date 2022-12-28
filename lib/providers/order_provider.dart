@@ -9,7 +9,7 @@ import 'package:fuel_ur_way_frontend/providers/dio_helper.dart';
 class OrderProvider extends ChangeNotifier {
   Ordermodel? order;
   bool loading = false;
-  String serverUrl = "http://10.0.2.2:8000/";
+  String serverUrl = "http://127.0.0.1:8000";
   getorderData() async {
     loading = true;
     order = (await getSinglePostData());
@@ -17,20 +17,21 @@ class OrderProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void postData({
+  Future<void> postData({
     required String user,
     required String carType,
     required String fuelType,
     required String litter,
     required String address,
-    required String date,
-    required String time,
+    required DateTime date,
+    required DateTime time,
     required String price,
     required String payed,
-    required String status,
+    String? status,
+    String? extraService,
   }) async {
-    String myUrl = "$serverUrl/create/order";
-    final response = await DioHelper.postData(url: myUrl, data: {
+    String myUrl = "$serverUrl/create/order/";
+    var response = await DioHelper.postData(url: myUrl, data: {
       "user": user,
       "carType": carType,
       "fuelType": fuelType,
@@ -52,7 +53,7 @@ class OrderProvider extends ChangeNotifier {
     Ordermodel? result;
     try {
       final response = await http.get(
-        Uri.parse("http://10.0.2.2:8000/list/order/"),
+        Uri.parse("http://127.0.0.1:8000/list/order"),
         headers: {
           HttpHeaders.contentTypeHeader: "application/json",
         },
